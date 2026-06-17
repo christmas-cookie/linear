@@ -17,7 +17,8 @@ function fertilizer:playcustomaudio(config)
 	local link = config.link or config.Link
 	local looped = config.looped or config.Looped
 	local volume = config.volume or config.Volume
-	local file = "linear/audios/faudio" .. tick() .. ".mp3"
+	local ext = link:match("%.([^%.%?]+)$") or "mp3"
+	local file = "linear/audios/faudio" .. tick() .. "." .. ext
 	writefile(file, game:HttpGet(link))
 	local sound = Instance.new("Sound")
 	sound.SoundId = getcustomasset(file)
@@ -39,7 +40,8 @@ function fertilizer:playcustomvideo(config)
 	local element = config.path or config.Path
 	local looped = config.looped or config.Looped
 	local volume = config.volume or config.Volume
-	local file = "linear/videos/fvideo" .. tick() .. ".mp4"
+	local ext = link:match("%.([^%.%?]+)$") or "webm"
+	local file = "linear/videos/fvideo" .. tick() .. "." .. ext
 	writefile(file, game:HttpGet(link))
 	element.Video = getcustomasset(file)
 	element.Looped = looped
@@ -51,7 +53,8 @@ function fertilizer:showcustomimage(config)
 	local link = config.link or config.Link
 	local element = config.path or config.Path
 	local transparency = config.transparency or config.Transparency
-	local file = "linear/images/fimage" .. tick() .. ".png"
+	local ext = link:match("%.([^%.%?]+)$") or "png"
+	local file = "linear/images/fimage" .. tick() .. "." .. ext
 	writefile(file, game:HttpGet(link))
 	local asset = getcustomasset(file)
 	if element:IsA("Decal") or element:IsA("Texture") then
