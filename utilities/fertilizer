@@ -1,0 +1,66 @@
+local fertilizer = {}
+
+if not isfolder("linear") then
+	makefolder("linear")
+end
+if not isfolder("linear/audios") then
+	makefolder("linear/audios")
+end
+if not isfolder("linear/videos") then
+	makefolder("linear/videos")
+end
+if not isfolder("linear/images") then
+	makefolder("linear/images")
+end
+
+function fertilizer:playcustomaudio(config)
+	local link = config.link or config.Link
+	local looped = config.looped or config.Looped
+	local volume = config.volume or config.Volume
+	local file = "linear/audios/faudio" .. tick() .. ".mp3"
+	writefile(file, game:HttpGet(link))
+	local sound = Instance.new("Sound")
+	sound.SoundId = getcustomasset(file)
+	sound.Looped = looped
+	sound.Volume = volume
+	sound.Parent = game:GetService("SoundService")
+	sound:Play()
+	if not looped then
+		local connection
+		connection = sound.Ended:Connect(function()
+			connection:Disconnect()
+			sound:Destroy()
+		end)
+	end
+end
+
+function fertilizer:playcustomvideo(config)
+	local link = config.link or config.Link
+	local element = config.path or config.Path
+	local looped = config.looped or config.Looped
+	local volume = config.volume or config.Volume
+	local file = "linear/videos/fvideo" .. tick() .. ".mp4"
+	writefile(file, game:HttpGet(link))
+	element.Video = getcustomasset(file)
+	element.Looped = looped
+	element.Volume = volume
+	element:Play()
+end
+
+function fertilizer:showcustomimage(config)
+	local link = config.link or config.Link
+	local element = config.path or config.Path
+	local transparency = config.transparency or config.Transparency
+	local file = "linear/images/fimage" .. tick() .. ".png"
+	writefile(file, game:HttpGet(link))
+	local asset = getcustomasset(file)
+	if element:IsA("Decal") or element:IsA("Texture") then
+		element.Texture = asset
+		element.Transparency = transparency
+	else
+		element.Image = asset
+		element.ImageTransparency = transparency
+	end
+end
+
+return fertilizer
