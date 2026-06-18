@@ -7,9 +7,14 @@ end
 
 local function load(config, folder, prefix, ext)
 	local link = config.link or config.Link
-	local suffix = link:match("%.([^%.%?]+)$") or ext
-	local file = "linear/" .. folder .. "/" .. prefix .. tick() .. "." .. suffix
-	writefile(file, game:HttpGet(link))
+	local name = link:match("([^/]+)$") or (prefix .. "." .. ext)
+	local file = "linear/" .. folder .. "/" .. name
+	if not isfile(file) then
+		local success, body = pcall(game.HttpGet, game, link)
+		if success and body then
+			writefile(file, body)
+		end
+	end
 	return getcustomasset(file)
 end
 
