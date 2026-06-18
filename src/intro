@@ -6,6 +6,7 @@ function intro:Start()
 	local gui = Instance.new("ScreenGui")
 	gui.Name = "intro"
 	gui.IgnoreGuiInset = true
+	gui.DisplayOrder = 9998
 	gui.Parent = gethui and gethui() or game:GetService("CoreGui")
 
 	local bgframe = Instance.new("Frame")
@@ -14,6 +15,7 @@ function intro:Start()
 	bgframe.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	bgframe.BackgroundTransparency = 1
 	bgframe.BorderSizePixel = 0
+	bgframe.ZIndex = 9999
 	bgframe.Parent = gui
 
 	local startvideo = Instance.new("VideoFrame")
@@ -22,8 +24,9 @@ function intro:Start()
 	startvideo.Position = UDim2.new(0.5, 0, 0.5, 0)
 	startvideo.AnchorPoint = Vector2.new(0.5, 0.5)
 	startvideo.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	startvideo.BackgroundTransparency = 1
 	startvideo.BorderSizePixel = 0
-	startvideo.ZIndex = 3
+	startvideo.ZIndex = 10002
 	startvideo.Parent = bgframe
 
 	local constraintone = Instance.new("UIAspectRatioConstraint")
@@ -36,8 +39,10 @@ function intro:Start()
 	iconimage.Position = UDim2.new(0.5, 0, 0.5, 0)
 	iconimage.AnchorPoint = Vector2.new(0.5, 0.5)
 	iconimage.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	iconimage.BackgroundTransparency = 1
+	iconimage.ImageTransparency = 1
 	iconimage.BorderSizePixel = 0
-	iconimage.ZIndex = 2
+	iconimage.ZIndex = 10001
 	iconimage.Parent = bgframe
 
 	local constrainttwo = Instance.new("UIAspectRatioConstraint")
@@ -50,15 +55,21 @@ function intro:Start()
 	endvideo.Position = UDim2.new(0.5, 0, 0.5, 0)
 	endvideo.AnchorPoint = Vector2.new(0.5, 0.5)
 	endvideo.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	endvideo.BackgroundTransparency = 1
 	endvideo.BorderSizePixel = 0
-	endvideo.ZIndex = 1
+	endvideo.ZIndex = 10000
 	endvideo.Parent = bgframe
 
 	local constraintthree = Instance.new("UIAspectRatioConstraint")
 	constraintthree.AspectRatio = 1
 	constraintthree.Parent = endvideo
 
-	local fadein = tweenservice:Create(bgframe, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {BackgroundTransparency = 0})
+	local fadeinfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+
+	tweenservice:Create(bgframe, fadeinfo, {BackgroundTransparency = 0}):Play()
+	tweenservice:Create(startvideo, fadeinfo, {BackgroundTransparency = 0}):Play()
+	tweenservice:Create(iconimage, fadeinfo, {BackgroundTransparency = 0, ImageTransparency = 0}):Play()
+	local fadein = tweenservice:Create(endvideo, fadeinfo, {BackgroundTransparency = 0})
 	fadein:Play()
 	fadein.Completed:Wait()
 
@@ -93,10 +104,14 @@ function intro:Start()
 		task.wait()
 	until endvideo.TimePosition > 0 or (tick() - starttime) > 0.5
 
-	task.wait(0.2)
+	task.wait(0.5)
 
-	local fadeout = tweenservice:Create(bgframe, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {BackgroundTransparency = 1})
+	tweenservice:Create(bgframe, fadeinfo, {BackgroundTransparency = 1}):Play()
+	tweenservice:Create(startvideo, fadeinfo, {BackgroundTransparency = 1}):Play()
+	tweenservice:Create(iconimage, fadeinfo, {BackgroundTransparency = 1, ImageTransparency = 1}):Play()
+	local fadeout = tweenservice:Create(endvideo, fadeinfo, {BackgroundTransparency = 1})
 	fadeout:Play()
+	fadeout.Completed:Wait()
 
 	iconimage.Visible = false
 	endvideo.Ended:Wait()
