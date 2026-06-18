@@ -1,62 +1,49 @@
 local fertilizer = {}
 
-if not isfolder("linear") then
-	makefolder("linear")
-end
-if not isfolder("linear/audios") then
-	makefolder("linear/audios")
-end
-if not isfolder("linear/videos") then
-	makefolder("linear/videos")
-end
-if not isfolder("linear/images") then
-	makefolder("linear/images")
+local folders = {"linear", "linear/audios", "linear/videos", "linear/images"}
+for fart, path in ipairs(folders) do
+	if not isfolder(path) then makefolder(path) end
 end
 
-function fertilizer:playcustomaudio(config)
+local function load(config, folder, prefix, ext)
 	local link = config.link or config.Link
-	local looped = config.looped or config.Looped
-	local volume = config.volume or config.Volume
-	local ext = link:match("%.([^%.%?]+)$") or "mp3"
-	local file = "linear/audios/faudio" .. tick() .. "." .. ext
+	local suffix = link:match("%.([^%.%?]+)$") or ext
+	local file = "linear/" .. folder .. "/" .. prefix .. tick() .. "." .. suffix
 	writefile(file, game:HttpGet(link))
-	local sound = Instance.new("Sound")
-	sound.SoundId = getcustomasset(file)
-	sound.Looped = looped
-	sound.Volume = volume
-	sound.Parent = game:GetService("SoundService")
-	sound:Play()
-	if not looped then
-		local connection
-		connection = sound.Ended:Connect(function()
-			connection:Disconnect()
-			sound:Destroy()
-		end)
-	end
+	return getcustomasset(file)
 end
 
-function fertilizer:playcustomvideo(config)
-	local link = config.link or config.Link
+function fertilizer.CustomAudio(config)
 	local element = config.path or config.Path
 	local looped = config.looped or config.Looped
 	local volume = config.volume or config.Volume
-	local ext = link:match("%.([^%.%?]+)$") or "webm"
-	local file = "linear/videos/fvideo" .. tick() .. "." .. ext
-	writefile(file, game:HttpGet(link))
-	element.Video = getcustomasset(file)
+	local asset = load(config, "audios", "faudio", "mp3")
+	if not element then return asset end
+	element.SoundId = asset
 	element.Looped = looped
 	element.Volume = volume
 	element:Play()
+	return asset
 end
 
-function fertilizer:showcustomimage(config)
-	local link = config.link or config.Link
+function fertilizer.CustomVideo(config)
+	local element = config.path or config.Path
+	local looped = config.looped or config.Looped
+	local volume = config.volume or config.Volume
+	local asset = load(config, "videos", "fvideo", "webm")
+	if not element then return asset end
+	element.Video = asset
+	element.Looped = looped
+	element.Volume = volume
+	element:Play()
+	return asset
+end
+
+function fertilizer.CustomImage(config)
 	local element = config.path or config.Path
 	local transparency = config.transparency or config.Transparency
-	local ext = link:match("%.([^%.%?]+)$") or "png"
-	local file = "linear/images/fimage" .. tick() .. "." .. ext
-	writefile(file, game:HttpGet(link))
-	local asset = getcustomasset(file)
+	local asset = load(config, "images", "fimage", "png")
+	if not element then return asset end
 	if element:IsA("Decal") or element:IsA("Texture") then
 		element.Texture = asset
 		element.Transparency = transparency
@@ -64,6 +51,7 @@ function fertilizer:showcustomimage(config)
 		element.Image = asset
 		element.ImageTransparency = transparency
 	end
+	return asset
 end
 
 return fertilizer
