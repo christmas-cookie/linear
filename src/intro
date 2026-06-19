@@ -1,6 +1,6 @@
 local intro = {}
 local fertilizer = loadstring(game:HttpGet("https://raw.githubusercontent.com/christmas-cookie/linear/refs/heads/main/utilities/fertilizer"))()
-local tweenservice = game:GetService("TweenService")
+local ts = game:GetService("TweenService")
 
 function intro:Start()
 	local gui = Instance.new("ScreenGui")
@@ -9,107 +9,120 @@ function intro:Start()
 	gui.DisplayOrder = 9998
 	gui.Parent = gethui and gethui() or game:GetService("CoreGui")
 
-	local bgframe = Instance.new("Frame")
-	bgframe.Name = "bg"
-	bgframe.Size = UDim2.new(1, 0, 1, 0)
-	bgframe.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-	bgframe.BackgroundTransparency = 1
-	bgframe.BorderSizePixel = 0
-	bgframe.ZIndex = 9999
-	bgframe.Parent = gui
+	local bg = Instance.new("Frame")
+	bg.Name = "bg"
+	bg.Size = UDim2.new(1, 0, 1, 0)
+	bg.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	bg.BackgroundTransparency = 1
+	bg.BorderSizePixel = 0
+	bg.ZIndex = 9999
+	bg.Parent = gui
 
-	local fadeinfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
-	local bgFadeIn = tweenservice:Create(bgframe, fadeinfo, {BackgroundTransparency = 0})
-	bgFadeIn:Play()
+	local info = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+	local fadein = ts:Create(bg, info, {BackgroundTransparency = 0})
+	fadein:Play()
 
-	repeat task.wait() until bgframe.BackgroundTransparency <= 0.17
+	repeat task.wait() until bg.BackgroundTransparency <= 0.17
 
-	local startvideo = Instance.new("VideoFrame")
-	startvideo.Name = "start"
-	startvideo.Size = UDim2.new(0.15, 0, 0.15, 0)
-	startvideo.Position = UDim2.new(0.5, 0, 0.5, 0)
-	startvideo.AnchorPoint = Vector2.new(0.5, 0.5)
-	startvideo.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-	startvideo.BackgroundTransparency = 0
-	startvideo.BorderSizePixel = 0
-	startvideo.ZIndex = 10002
-	startvideo.Parent = bgframe
+	local startvid = Instance.new("VideoFrame")
+	startvid.Name = "start"
+	startvid.Size = UDim2.new(0.15, 0, 0.15, 0)
+	startvid.Position = UDim2.new(0.5, 0, 0.5, 0)
+	startvid.AnchorPoint = Vector2.new(0.5, 0.5)
+	startvid.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	startvid.BackgroundTransparency = 0
+	startvid.BorderSizePixel = 0
+	startvid.ZIndex = 10002
+	startvid.Parent = bg
 
-	local constraintone = Instance.new("UIAspectRatioConstraint")
-	constraintone.AspectRatio = 1
-	constraintone.Parent = startvideo
+	local c1 = Instance.new("UIAspectRatioConstraint")
+	c1.AspectRatio = 1
+	c1.Parent = startvid
 
-	local iconimage = Instance.new("ImageLabel")
-	iconimage.Name = "infinite"
-	iconimage.Size = UDim2.new(0.15, 0, 0.15, 0)
-	iconimage.Position = UDim2.new(0.5, 0, 0.5, 0)
-	iconimage.AnchorPoint = Vector2.new(0.5, 0.5)
-	iconimage.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-	iconimage.BackgroundTransparency = 0
-	iconimage.ImageTransparency = 0
-	iconimage.BorderSizePixel = 0
-	iconimage.ZIndex = 10001
-	iconimage.Parent = bgframe
+	local icon = Instance.new("ImageLabel")
+	icon.Name = "infinite"
+	icon.Size = UDim2.new(0.15, 0, 0.15, 0)
+	icon.Position = UDim2.new(0.5, 0, 0.5, 0)
+	icon.AnchorPoint = Vector2.new(0.5, 0.5)
+	icon.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	icon.BackgroundTransparency = 0
+	icon.ImageTransparency = 0
+	icon.BorderSizePixel = 0
+	icon.ZIndex = 10001
+	icon.Parent = bg
 	
-	iconimage.Image = fertilizer.CustomImage({link = "https://raw.githubusercontent.com/christmas-cookie/linear/refs/heads/main/assets/image/icon.png"})
+	icon.Image = fertilizer.CustomImage({link = "https://raw.githubusercontent.com/christmas-cookie/linear/refs/heads/main/assets/image/icon.png"})
 
-	local constrainttwo = Instance.new("UIAspectRatioConstraint")
-	constrainttwo.AspectRatio = 1
-	constrainttwo.Parent = iconimage
+	local c2 = Instance.new("UIAspectRatioConstraint")
+	c2.AspectRatio = 1
+	c2.Parent = icon
 
-	local endvideo = Instance.new("VideoFrame")
-	endvideo.Name = "end"
-	endvideo.Size = UDim2.new(0.15, 0, 0.15, 0)
-	endvideo.Position = UDim2.new(0.5, 0, 0.5, 0)
-	endvideo.AnchorPoint = Vector2.new(0.5, 0.5)
-	endvideo.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-	endvideo.BackgroundTransparency = 0
-	endvideo.BorderSizePixel = 0
-	endvideo.ZIndex = 10000
-	endvideo.Parent = bgframe
+	local endvid = Instance.new("VideoFrame")
+	endvid.Name = "end"
+	endvid.Size = UDim2.new(0.15, 0, 0.15, 0)
+	endvid.Position = UDim2.new(0.5, 0, 0.5, 0)
+	endvid.AnchorPoint = Vector2.new(0.5, 0.5)
+	endvid.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	endvid.BackgroundTransparency = 0
+	endvid.BorderSizePixel = 0
+	endvid.ZIndex = 10000
+	endvid.Parent = bg
 
-	local constraintthree = Instance.new("UIAspectRatioConstraint")
-	constraintthree.AspectRatio = 1
-	constraintthree.Parent = endvideo
+	local c3 = Instance.new("UIAspectRatioConstraint")
+	c3.AspectRatio = 1
+	c3.Parent = endvid
 
-	startvideo.Visible = true
-	iconimage.Visible = true
-	endvideo.Visible = true
+	startvid.Visible = true
+	icon.Visible = true
+	endvid.Visible = true
 
-	bgFadeIn.Completed:Wait()
+	fadein.Completed:Wait()
 
 	fertilizer.CustomVideo({
 		link = "https://raw.githubusercontent.com/christmas-cookie/linear/refs/heads/main/assets/video/intro.webm",
-		path = startvideo,
+		path = startvid,
 		looped = false,
 		volume = 1
 	})
 
-	startvideo.Ended:Wait()
-	startvideo:Destroy()
+	local done = false
+	local conn
+	conn = startvid.Ended:Connect(function()
+		done = true
+	end)
+
+	while not done do
+		if startvid.TimeLength > 0 and startvid.TimePosition >= (startvid.TimeLength - 0.05) then
+			break
+		end
+		task.wait()
+	end
+
+	if conn then conn:Disconnect() end
+	startvid.Visible = false
+	startvid:Destroy()
 
 	repeat task.wait() until getgenv().linearDWloaded == true
 
-	iconimage.Visible = false
-	endvideo.TimePosition = 0
+	icon.Visible = false
+	endvid.TimePosition = 0
 	
 	fertilizer.CustomVideo({
 		link = "https://raw.githubusercontent.com/christmas-cookie/linear/refs/heads/main/assets/video/outro.webm",
-		path = endvideo,
+		path = endvid,
 		looped = false,
 		volume = 1
 	})
 
-	local actualOutro = endvideo:FindFirstChildOfClass("VideoFrame") or endvideo
-	actualOutro.Ended:Wait()
+	endvid.Ended:Wait()
 
 	task.wait(0.5)
 
-	if startvideo and startvideo.Parent then startvideo:Destroy() end
-	if iconimage and iconimage.Parent then iconimage:Destroy() end
-	if endvideo and endvideo.Parent then endvideo:Destroy() end
+	if startvid and startvid.Parent then startvid:Destroy() end
+	if icon and icon.Parent then icon:Destroy() end
+	if endvid and endvid.Parent then endvid:Destroy() end
 
-	local fadeout = tweenservice:Create(bgframe, fadeinfo, {BackgroundTransparency = 1})
+	local fadeout = ts:Create(bg, info, {BackgroundTransparency = 1})
 	fadeout:Play()
 	fadeout.Completed:Wait()
 
