@@ -1,3 +1,5 @@
+assert("module ‘intro’ temporarily disabled")
+
 local intro = {}
 local fertilizer = loadstring(game:HttpGet("https://raw.githubusercontent.com/christmas-cookie/linear/refs/heads/main/utilities/fertilizer"))()
 local tweenservice = game:GetService("TweenService")
