@@ -19,8 +19,8 @@ function intro:Start()
 	bgframe.Parent = gui
 
 	local fadeinfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
-	local bgFadeIn = tweenservice:Create(bgframe, fadeinfo, {BackgroundTransparency = 0})
-	bgFadeIn:Play()
+	local bgfadein = tweenservice:Create(bgframe, fadeinfo, {BackgroundTransparency = 0})
+	bgfadein:Play()
 
 	repeat task.wait() until bgframe.BackgroundTransparency <= 0.17
 
@@ -76,7 +76,7 @@ function intro:Start()
 	iconimage.Visible = true
 	endvideo.Visible = true
 
-	bgFadeIn.Completed:Wait()
+	bgfadein.Completed:Wait()
 
 	fertilizer.CustomVideo({
 		link = "https://raw.githubusercontent.com/christmas-cookie/linear/refs/heads/main/assets/video/intro.webm",
@@ -85,12 +85,13 @@ function intro:Start()
 		volume = 1
 	})
 
-	startvideo.Ended:Wait()
-	startvideo:Destroy()
+	repeat task.wait() until startvideo.TimeLength > 0
+	while startvideo.TimePosition < (startvideo.TimeLength - 0.05) do
+		task.wait()
+	end
 
 	repeat task.wait() until getgenv().linearloaded == true
 
-	iconimage.Visible = false
 	endvideo.TimePosition = 0
 	
 	fertilizer.CustomVideo({
@@ -100,9 +101,13 @@ function intro:Start()
 		volume = 1
 	})
 
-	endvideo.Ended:Wait()
+	local outrovideo = endvideo:FindFirstChildOfClass("VideoFrame") or endvideo
+	repeat task.wait() until outrovideo.TimePosition > 0
 
-	task.wait(0.5)
+	startvideo.Visible = false
+	iconimage.Visible = false
+
+	outrovideo.Ended:Wait()
 
 	if startvideo and startvideo.Parent then startvideo:Destroy() end
 	if iconimage and iconimage.Parent then iconimage:Destroy() end
