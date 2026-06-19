@@ -22,7 +22,7 @@ function intro:Start()
 	local bgFadeIn = tweenservice:Create(bgframe, fadeinfo, {BackgroundTransparency = 0})
 	bgFadeIn:Play()
 
-	repeat task.wait() until bgframe.BackgroundTransparency <= 0.85
+	repeat task.wait() until bgframe.BackgroundTransparency <= 0.9
 
 	local startvideo = Instance.new("VideoFrame")
 	startvideo.Name = "start"
@@ -98,19 +98,18 @@ function intro:Start()
 		volume = 1
 	})
 
-	local starttime = tick()
-	repeat
-		task.wait()
-	until endvideo.TimePosition > 0 or (tick() - starttime) > 10
+	endvideo.Ended:Wait()
 
 	task.wait(0.5)
 
-	if iconimage then iconimage:Destroy() end
+	if startvideo and startvideo.Parent then startvideo:Destroy() end
+	if iconimage and iconimage.Parent then iconimage:Destroy() end
+	if endvideo and endvideo.Parent then endvideo:Destroy() end
 
 	local fadeout = tweenservice:Create(bgframe, fadeinfo, {BackgroundTransparency = 1})
 	fadeout:Play()
+	fadeout.Completed:Wait()
 
-	endvideo.Ended:Wait()
 	gui:Destroy()
 end
 
