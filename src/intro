@@ -104,7 +104,7 @@ function intro:Start()
 		task.wait()
 	until endvideo.TimePosition > 0 or (tick() - starttime) > 0.5
 
-	task.wait(0.5)
+	task.wait(1)
 
 	tweenservice:Create(bgframe, fadeinfo, {BackgroundTransparency = 1}):Play()
 	tweenservice:Create(startvideo, fadeinfo, {BackgroundTransparency = 1}):Play()
