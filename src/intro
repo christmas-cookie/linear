@@ -18,6 +18,11 @@ function intro:Start()
 	bgframe.ZIndex = 9999
 	bgframe.Parent = gui
 
+	local fadeinfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+	tweenservice:Create(bgframe, fadeinfo, {BackgroundTransparency = 0}):Play()
+
+	repeat task.wait() until bgframe.BackgroundTransparency <= 0.85
+
 	local startvideo = Instance.new("VideoFrame")
 	startvideo.Name = "start"
 	startvideo.Size = UDim2.new(0.15, 0, 0.15, 0)
@@ -44,6 +49,8 @@ function intro:Start()
 	iconimage.BorderSizePixel = 0
 	iconimage.ZIndex = 10001
 	iconimage.Parent = bgframe
+	
+	iconimage.Image = fertilizer.CustomImage({link = "https://raw.githubusercontent.com/christmas-cookie/linear/refs/heads/main/assets/image/icon.png"})
 
 	local constrainttwo = Instance.new("UIAspectRatioConstraint")
 	constrainttwo.AspectRatio = 1
@@ -64,9 +71,6 @@ function intro:Start()
 	constraintthree.AspectRatio = 1
 	constraintthree.Parent = endvideo
 
-	local fadeinfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
-
-	tweenservice:Create(bgframe, fadeinfo, {BackgroundTransparency = 0}):Play()
 	tweenservice:Create(startvideo, fadeinfo, {BackgroundTransparency = 0}):Play()
 	tweenservice:Create(iconimage, fadeinfo, {BackgroundTransparency = 0, ImageTransparency = 0}):Play()
 	local fadein = tweenservice:Create(endvideo, fadeinfo, {BackgroundTransparency = 0})
@@ -80,14 +84,12 @@ function intro:Start()
 		volume = 1
 	})
 
-	iconimage.Image = fertilizer.CustomImage({link = "https://raw.githubusercontent.com/christmas-cookie/linear/refs/heads/main/assets/image/icon.png"})
-
 	startvideo.Visible = true
 	iconimage.Visible = true
 	endvideo.Visible = true
 
 	startvideo.Ended:Wait()
-	startvideo.Visible = false
+	startvideo:Destroy()
 
 	repeat task.wait() until getgenv().linearDWloaded == true
 
@@ -104,18 +106,14 @@ function intro:Start()
 		task.wait()
 	until endvideo.TimePosition > 0 or (tick() - starttime) > 0.5
 
-	task.wait(1)
+	task.wait(0.5)
 
-	tweenservice:Create(bgframe, fadeinfo, {BackgroundTransparency = 1}):Play()
-	tweenservice:Create(startvideo, fadeinfo, {BackgroundTransparency = 1}):Play()
-	tweenservice:Create(iconimage, fadeinfo, {BackgroundTransparency = 1, ImageTransparency = 1}):Play()
-	local fadeout = tweenservice:Create(endvideo, fadeinfo, {BackgroundTransparency = 1})
+	if iconimage then iconimage:Destroy() end
+	if endvideo then endvideo:Destroy() end
+
+	local fadeout = tweenservice:Create(bgframe, fadeinfo, {BackgroundTransparency = 1})
 	fadeout:Play()
 	fadeout.Completed:Wait()
-
-	iconimage.Visible = false
-	endvideo.Ended:Wait()
-	endvideo.Visible = false
 
 	gui:Destroy()
 end
