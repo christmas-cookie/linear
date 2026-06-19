@@ -1,0 +1,132 @@
+local intro = {}
+local fertilizer = loadstring(game:HttpGet("https://raw.githubusercontent.com/christmas-cookie/linear/refs/heads/main/utilities/fertilizer"))()
+local tweenservice = game:GetService("TweenService")
+
+function intro:Start()
+	local gui = Instance.new("ScreenGui")
+	gui.Name = "intro"
+	gui.IgnoreGuiInset = true
+	gui.DisplayOrder = 9998
+	gui.Parent = gethui and gethui() or game:GetService("CoreGui")
+
+	local bgframe = Instance.new("Frame")
+	bgframe.Name = "bg"
+	bgframe.Size = UDim2.new(1, 0, 1, 0)
+	bgframe.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	bgframe.BackgroundTransparency = 1
+	bgframe.BorderSizePixel = 0
+	bgframe.ZIndex = 9999
+	bgframe.Parent = gui
+
+	local fadeinfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+	local bgFadeIn = tweenservice:Create(bgframe, fadeinfo, {BackgroundTransparency = 0})
+	bgFadeIn:Play()
+
+	repeat task.wait() until bgframe.BackgroundTransparency <= 0.17
+
+	local startvideo = Instance.new("VideoFrame")
+	startvideo.Name = "start"
+	startvideo.Size = UDim2.new(0.15, 0, 0.15, 0)
+	startvideo.Position = UDim2.new(0.5, 0, 0.5, 0)
+	startvideo.AnchorPoint = Vector2.new(0.5, 0.5)
+	startvideo.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	startvideo.BackgroundTransparency = 0
+	startvideo.BorderSizePixel = 0
+	startvideo.ZIndex = 10002
+	startvideo.Parent = bgframe
+
+	local constraintone = Instance.new("UIAspectRatioConstraint")
+	constraintone.AspectRatio = 1
+	constraintone.Parent = startvideo
+
+	local iconimage = Instance.new("ImageLabel")
+	iconimage.Name = "infinite"
+	iconimage.Size = UDim2.new(0.15, 0, 0.15, 0)
+	iconimage.Position = UDim2.new(0.5, 0, 0.5, 0)
+	iconimage.AnchorPoint = Vector2.new(0.5, 0.5)
+	iconimage.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	iconimage.BackgroundTransparency = 0
+	iconimage.ImageTransparency = 0
+	iconimage.BorderSizePixel = 0
+	iconimage.ZIndex = 10001
+	iconimage.Parent = bgframe
+	
+	iconimage.Image = fertilizer.CustomImage({link = "https://raw.githubusercontent.com/christmas-cookie/linear/refs/heads/main/assets/image/icon.png"})
+
+	local constrainttwo = Instance.new("UIAspectRatioConstraint")
+	constrainttwo.AspectRatio = 1
+	constrainttwo.Parent = iconimage
+
+	local endvideo = Instance.new("VideoFrame")
+	endvideo.Name = "end"
+	endvideo.Size = UDim2.new(0.15, 0, 0.15, 0)
+	endvideo.Position = UDim2.new(0.5, 0, 0.5, 0)
+	endvideo.AnchorPoint = Vector2.new(0.5, 0.5)
+	endvideo.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	endvideo.BackgroundTransparency = 0
+	endvideo.BorderSizePixel = 0
+	endvideo.ZIndex = 10000
+	endvideo.Parent = bgframe
+
+	local constraintthree = Instance.new("UIAspectRatioConstraint")
+	constraintthree.AspectRatio = 1
+	constraintthree.Parent = endvideo
+
+	startvideo.Visible = true
+	iconimage.Visible = true
+	endvideo.Visible = true
+
+	bgFadeIn.Completed:Wait()
+
+	fertilizer.CustomVideo({
+		link = "https://raw.githubusercontent.com/christmas-cookie/linear/refs/heads/main/assets/video/intro.webm",
+		path = startvideo,
+		looped = false,
+		volume = 1
+	})
+
+	local end = false
+	local endended
+	endended = startvideo.Ended:Connect(function()
+		end = true
+	end)
+
+	while not end do
+		if startvideo.TimeLength > 0 and startvideo.TimePosition >= (startvideo.TimeLength - 0.05) then
+			break
+		end
+		task.wait()
+	end
+
+	if endended then endended:Disconnect() end
+	startvideo.Visible = false
+	startvideo:Destroy()
+
+	repeat task.wait() until getgenv().linearDWloaded == true
+
+	iconimage.Visible = false
+	endvideo.TimePosition = 0
+	
+	fertilizer.CustomVideo({
+		link = "https://raw.githubusercontent.com/christmas-cookie/linear/refs/heads/main/assets/video/outro.webm",
+		path = endvideo,
+		looped = false,
+		volume = 1
+	})
+
+	endvideo.Ended:Wait()
+
+	task.wait(0.5)
+
+	if startvideo and startvideo.Parent then startvideo:Destroy() end
+	if iconimage and iconimage.Parent then iconimage:Destroy() end
+	if endvideo and endvideo.Parent then endvideo:Destroy() end
+
+	local fadeout = tweenservice:Create(bgframe, fadeinfo, {BackgroundTransparency = 1})
+	fadeout:Play()
+	fadeout.Completed:Wait()
+
+	gui:Destroy()
+end
+
+return intro
