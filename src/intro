@@ -1,5 +1,3 @@
-assert("module ‘intro’ temporarily disabled")
-
 local intro = {}
 local fertilizer = loadstring(game:HttpGet("https://raw.githubusercontent.com/christmas-cookie/linear/refs/heads/main/utilities/fertilizer"))()
 local tweenservice = game:GetService("TweenService")
@@ -87,24 +85,10 @@ function intro:Start()
 		volume = 1
 	})
 
-	local end = false
-	local endended
-	endended = startvideo.Ended:Connect(function()
-		end = true
-	end)
-
-	while not end do
-		if startvideo.TimeLength > 0 and startvideo.TimePosition >= (startvideo.TimeLength - 0.05) then
-			break
-		end
-		task.wait()
-	end
-
-	if endended then endended:Disconnect() end
-	startvideo.Visible = false
+	startvideo.Ended:Wait()
 	startvideo:Destroy()
 
-	repeat task.wait() until getgenv().linearDWloaded == true
+	repeat task.wait() until getgenv().linearloaded == true
 
 	iconimage.Visible = false
 	endvideo.TimePosition = 0
