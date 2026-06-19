@@ -101,7 +101,7 @@ function intro:Start()
 	local starttime = tick()
 	repeat
 		task.wait()
-	until endvideo.TimePosition > 0 or (tick() - starttime) > 0.5
+	until endvideo.TimePosition > 0 or (tick() - starttime) > 10
 
 	task.wait(0.5)
 
