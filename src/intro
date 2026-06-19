@@ -19,7 +19,8 @@ function intro:Start()
 	bgframe.Parent = gui
 
 	local fadeinfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
-	tweenservice:Create(bgframe, fadeinfo, {BackgroundTransparency = 0}):Play()
+	local bgFadeIn = tweenservice:Create(bgframe, fadeinfo, {BackgroundTransparency = 0})
+	bgFadeIn:Play()
 
 	repeat task.wait() until bgframe.BackgroundTransparency <= 0.85
 
@@ -29,7 +30,7 @@ function intro:Start()
 	startvideo.Position = UDim2.new(0.5, 0, 0.5, 0)
 	startvideo.AnchorPoint = Vector2.new(0.5, 0.5)
 	startvideo.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-	startvideo.BackgroundTransparency = 1
+	startvideo.BackgroundTransparency = 0
 	startvideo.BorderSizePixel = 0
 	startvideo.ZIndex = 10002
 	startvideo.Parent = bgframe
@@ -44,8 +45,8 @@ function intro:Start()
 	iconimage.Position = UDim2.new(0.5, 0, 0.5, 0)
 	iconimage.AnchorPoint = Vector2.new(0.5, 0.5)
 	iconimage.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-	iconimage.BackgroundTransparency = 1
-	iconimage.ImageTransparency = 1
+	iconimage.BackgroundTransparency = 0
+	iconimage.ImageTransparency = 0
 	iconimage.BorderSizePixel = 0
 	iconimage.ZIndex = 10001
 	iconimage.Parent = bgframe
@@ -62,7 +63,7 @@ function intro:Start()
 	endvideo.Position = UDim2.new(0.5, 0, 0.5, 0)
 	endvideo.AnchorPoint = Vector2.new(0.5, 0.5)
 	endvideo.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-	endvideo.BackgroundTransparency = 1
+	endvideo.BackgroundTransparency = 0
 	endvideo.BorderSizePixel = 0
 	endvideo.ZIndex = 10000
 	endvideo.Parent = bgframe
@@ -71,11 +72,11 @@ function intro:Start()
 	constraintthree.AspectRatio = 1
 	constraintthree.Parent = endvideo
 
-	tweenservice:Create(startvideo, fadeinfo, {BackgroundTransparency = 0}):Play()
-	tweenservice:Create(iconimage, fadeinfo, {BackgroundTransparency = 0, ImageTransparency = 0}):Play()
-	local fadein = tweenservice:Create(endvideo, fadeinfo, {BackgroundTransparency = 0})
-	fadein:Play()
-	fadein.Completed:Wait()
+	startvideo.Visible = true
+	iconimage.Visible = true
+	endvideo.Visible = true
+
+	bgFadeIn.Completed:Wait()
 
 	fertilizer.CustomVideo({
 		link = "https://raw.githubusercontent.com/christmas-cookie/linear/refs/heads/main/assets/video/intro.webm",
@@ -83,10 +84,6 @@ function intro:Start()
 		looped = false,
 		volume = 1
 	})
-
-	startvideo.Visible = true
-	iconimage.Visible = true
-	endvideo.Visible = true
 
 	startvideo.Ended:Wait()
 	startvideo:Destroy()
@@ -109,12 +106,11 @@ function intro:Start()
 	task.wait(0.5)
 
 	if iconimage then iconimage:Destroy() end
-	if endvideo then endvideo:Destroy() end
 
 	local fadeout = tweenservice:Create(bgframe, fadeinfo, {BackgroundTransparency = 1})
 	fadeout:Play()
-	fadeout.Completed:Wait()
 
+	endvideo.Ended:Wait()
 	gui:Destroy()
 end
 
