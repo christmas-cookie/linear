@@ -22,7 +22,7 @@ function intro:Start()
 	local bgFadeIn = tweenservice:Create(bgframe, fadeinfo, {BackgroundTransparency = 0})
 	bgFadeIn:Play()
 
-	repeat task.wait() until bgframe.BackgroundTransparency <= 0.9
+	repeat task.wait() until bgframe.BackgroundTransparency <= 0.17
 
 	local startvideo = Instance.new("VideoFrame")
 	startvideo.Name = "start"
@@ -90,7 +90,9 @@ function intro:Start()
 
 	repeat task.wait() until getgenv().linearDWloaded == true
 
+	iconimage.Visible = false
 	endvideo.TimePosition = 0
+	
 	fertilizer.CustomVideo({
 		link = "https://raw.githubusercontent.com/christmas-cookie/linear/refs/heads/main/assets/video/outro.webm",
 		path = endvideo,
@@ -98,7 +100,8 @@ function intro:Start()
 		volume = 1
 	})
 
-	endvideo.Ended:Wait()
+	local actualOutro = endvideo:FindFirstChildOfClass("VideoFrame") or endvideo
+	actualOutro.Ended:Wait()
 
 	task.wait(0.5)
 
