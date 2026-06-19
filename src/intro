@@ -3,6 +3,21 @@ local fertilizer = loadstring(game:HttpGet("https://raw.githubusercontent.com/ch
 local tweenservice = game:GetService("TweenService")
 
 function intro:Start()
+	local audio = Instance.new("Sound")
+	audio.Name = "audio"
+	audio.Parent = game:GetService("SoundService")
+
+	fertilizer.CustomAudio({
+		link = "https://raw.githubusercontent.com/christmas-cookie/linear/refs/heads/main/assets/audio/booting.mp3",
+		path = audio,
+		looped = false,
+		volume = 1
+	})
+
+	audio.Ended:Connect(function()
+		audio:Destroy()
+	end)
+
 	local gui = Instance.new("ScreenGui")
 	gui.Name = "intro"
 	gui.IgnoreGuiInset = true
